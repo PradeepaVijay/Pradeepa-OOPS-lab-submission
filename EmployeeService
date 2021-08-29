@@ -1,0 +1,101 @@
+
+package com.greatlearning.main;
+import java.util.Scanner;
+import com.greatlearning.model.Employee;
+import com.greatlearning.service.*;
+public class EmployeeDemo {
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Scanner sc = new Scanner(System.in);
+		//Employee employee = new Employee(firstName,lastName);
+		//public void employee() {
+		System.out.println("Enter first name");
+		String firstName = sc.next();
+		//Employee e = new Employee();
+		System.out.println("Enter last name");
+		String lastName=sc.next();
+		System.out.println("Enter department ");
+		String deptName = sc.next();
+		Employee emp = new Employee(firstName, lastName, deptName);
+		EmployeeService ies = new EmployeeServiceImpl();
+		System.out.println(ies.generateEmail(emp));
+		}
+}
+-----------------------------------------------------------------------------------------------
+package com.greatlearning.service;
+import com.greatlearning.model.Employee;
+import java.util.Random;
+public class EmployeeServiceImpl implements EmployeeService {
+	
+	
+   public String generateEmail(Employee e) {
+		// TODO Auto-generated method stub
+		return e.getFirstName() + e.getLastName() + e.getDepartmentID() + "@gl.com";
+	}
+
+@Override
+public String generatePassword() {
+	int length = 10;
+    String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+    String specialCharacters = "!@#$";
+    String numbers = "1234567890";
+    String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
+    Random random = new Random();
+    char[] password = new char[length];
+
+    password[0] = lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length()));
+    password[1] = capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length()));
+    password[2] = specialCharacters.charAt(random.nextInt(specialCharacters.length()));
+    password[3] = numbers.charAt(random.nextInt(numbers.length()));
+ 
+    for(int i = 4; i< length ; i++) {
+       password[i] = combinedChars.charAt(random.nextInt(combinedChars.length()));
+    }
+    String str = String.valueOf(password);
+    return str;
+ }
+
+}
+
+---------------------------------------------------------------------------
+package com.greatlearning.model;
+
+public class Employee {
+
+	private String firstName;
+	private String DepartmentID;
+	private String lastName;
+	
+	public Employee(String firstName,String lastName, String DepartmentID) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.DepartmentID = DepartmentID;		
+		}
+	public String getDepartmentID() {
+		return DepartmentID;
+	}
+	
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+
+	
+}
+--------------------------------------------------------------------------------------
+package com.greatlearning.service;
+import com.greatlearning.model.Employee;
+public interface EmployeeService {
+	public String generatePassword();
+	public String generateEmail(Employee e);
+
+}
+------------------------------------------------------------------------------------
